@@ -1,7 +1,8 @@
 import unittest
 
 class Serializer(object):
-    pass
+    def is_valid(self):
+        pass   
 
 class MessageSerializer(Serializer):
     sender = CharField(min_length=10, max_length=12)
