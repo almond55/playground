@@ -1,8 +1,32 @@
 import unittest
 
 class Serializer(object):
-    def is_valid(self):
-        pass   
+    def is_valid(self, data):
+        required = ['sender', 'recipient', 'message']
+        ok = []
+        for x in data:
+            if x in required and type(data[x]) is str:
+                ok.append[x]
+            else:
+                return False
+
+            if len(ok) is len(required):
+                return True
+
+    def validated_data(self, data):
+        if self.is_valid():
+            return data
+
+    def errors(self, data):
+        required = ['sender', 'recipient', 'message']
+        errors = {}
+        if not self.is_valid():
+            for x in data:
+                if x in required and type(data[x]) is not str:
+                    errors[x] = ['is required']
+                elif x not in required:
+                    errors[x] = ['%s is required' % required]
+            return errors
 
 class MessageSerializer(Serializer):
     sender = CharField(min_length=10, max_length=12)
@@ -29,7 +53,7 @@ class TestMessageSerializer(unittest.TestCase):
     def test_send_sms_missing_recipient(self):
         data = {
             'sender': '71909191991',
-            'recipient': '601818199810',
+            'recipient': None,
             'message': 'test',
         }
 
